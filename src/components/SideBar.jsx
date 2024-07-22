@@ -13,7 +13,7 @@ const SideBar = () => {
   const isMenuOpen = useSelector((store) => store.app.isMenuOpen);
 
   return (
-    <div className="p-5 shadow-lg h-screen">
+    <div className="p-5 shadow-lg ">
       <ul>
         <li className="mb-2">
           <Link to={'/'}>

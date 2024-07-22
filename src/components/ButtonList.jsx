@@ -1,41 +1,19 @@
 import React, { useRef, useState } from 'react';
 import Button from './Button';
 import { FaChevronCircleLeft, FaChevronCircleRight } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
+import getSearchVideos from '../utils/getSearchVideos';
+import { topics } from '../utils/constants';
 
 const ButtonList = () => {
-  const list = [
-    'All',
-    'Gaming',
-    'Music',
-    'Cooking',
-    'Valentine',
-    'Cricket',
-    'Songs',
-    'Gaming',
-    'Music',
-    'Cooking',
-    'Valentine',
-    'Cricket',
-    'Songs',
-    'Gaming',
-    'Music',
-    'Cooking',
-    'Valentine',
-    'Cricket',
-    'Songs',
-    'Gaming',
-    'Music',
-    'Cooking',
-    'Valentine',
-    'Cricket',
-    'Songs',
-  ];
-
+  const list = topics;
+  const dispatch = useDispatch();
   const scrollRef = useRef(null);
   const [selectText,setSelectText] = useState("All");
 
   const handleSelect = (name)=>{
     setSelectText(name);
+    getSearchVideos(name, dispatch);
   }
 
   const prev = () => {

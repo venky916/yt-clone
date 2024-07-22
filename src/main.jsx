@@ -5,8 +5,6 @@ import './index.css'
 import { Provider } from 'react-redux'
 import store from './utils/store.js'
 
-import Body from './components/Body.jsx'
-
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(

@@ -1,14 +1,17 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { YOUTUBE_API } from '../utils/constants';
 import VideoCard, { AddVideoCard } from './VideoCard';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import store from '../utils/store';
+import { addNextPageToken, addVideos } from '../utils/videoSlice';
+import Shimmer from './Shimmer';
 
 const VideoContainer = () => {
-  const [videos, setVideos] = useState([]);
-  const [nextPageToken, setNextPageToken] = useState('');
   const dispatch = useDispatch();
-
+  const videos = useSelector((store) => store.video.videos);
+  const nextPageToken = useSelector(store=>store.video.nextPageToken);
+  console.log(videos);
 
   useEffect(() => {
     getVideos();
@@ -30,13 +33,13 @@ const VideoContainer = () => {
           : YOUTUBE_API;
       const response = await fetch(url);
       const json = await response.json();
+      // console.log(json)
 
       if (!Array.isArray(json?.items)) {
         throw new Error('API response is not as expected');
       }
-
-      setVideos((prevVideos) => [...prevVideos, ...json.items]);
-      setNextPageToken(json.nextPageToken);
+      dispatch(addVideos(json.items));
+      dispatch(addNextPageToken(json.nextPageToken));
     } catch (error) {
       console.error('Error fetching videos:', error);
     }
@@ -61,11 +64,15 @@ const VideoContainer = () => {
     };
   };
 
+   if (!videos.length) return <Shimmer />;
   return (
-    <div className="flex flex-wrap w-screen">
-      {videos[0] && <AddVideoCard info={videos[0]} />}
-      {videos.map((video) => (
-        <Link key={video.id} to={'/watch?v=' + video?.id}>
+    <div className="flex flex-wrap">
+      {videos[0] && <AddVideoCard info={videos[0]} key="add-video-card" />}
+      {videos.map((video, index) => (
+        <Link
+          key={video.id.videoId || index}
+          to={'/watch?v=' + (video.id.videoId || video.id)}
+        >
           <VideoCard info={video} />
         </Link>
       ))}

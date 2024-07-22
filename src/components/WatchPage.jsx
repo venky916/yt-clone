@@ -11,7 +11,6 @@ import { RiShareForwardFill } from 'react-icons/ri';
 import { IoMdDownload } from 'react-icons/io';
 import { MdMoreHoriz } from 'react-icons/md';
 import { Link } from 'react-router-dom';
-import VideoCard from './VideoCard';
 
 const WatchPage = () => {
   const [video, setVideo] = useState(null);
@@ -36,9 +35,10 @@ const WatchPage = () => {
     ]);
     const watchVideoJson = await data[0].json();
     const recVideoJson = await data[1].json();
-    console.log(watchVideoJson, recVideoJson);
+    // console.log(watchVideoJson, recVideoJson);
     setVideo(watchVideoJson?.items[0]);
     setRelatedVideos(recVideoJson?.items);
+    window.scrollTo(0, 0);
   };
 
   if (!video) return null;
@@ -57,21 +57,21 @@ const WatchPage = () => {
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
           ></iframe>
-          <div className="flex justify-between">
-            <div className="flex">
+          <div className="mt-2 flex justify-between">
+            <div className="flex ">
               <img
                 src={thumbnails?.default?.url}
                 alt="thumbnail"
-                className="h-10 w-10 rounded-full"
+                className="h-10 w-10 rounded-full mr-2"
               />
-              <div className="flex flex-col">
+              <div className="flex flex-col ">
                 <h1>{channelTitle}</h1>
                 <p>{formatCompactNumber(statistics?.viewCount)} views</p>
               </div>
             </div>
-            <button>subscribe</button>
-            <div className="flex">
-              <BiSolidLike className="w-10 h-10" />
+            <button className='bg-slate-400 px-4 rounded-lg '>subscribe</button>
+            <div className="flex justify-between">
+              <BiSolidLike className="w-10 h-10 " />
               <BiSolidDislike className="w-10 h-10" />
               <RiShareForwardFill className="w-10 h-10" />
               <IoMdDownload className="w-10 h-10" />
@@ -102,13 +102,14 @@ const WatchPage = () => {
                     {video?.snippet?.channelTitle}
                   </li>
                   <li className="text-gray-500 text-[12px]">
-                    100 views{' '}
+                    {formatCompactNumber(video?.statistics?.viewCount) +
+                      'views '}
                     {(
                       Math.abs(
                         new Date(video?.snippet?.publishedAt) - new Date(),
                       ) /
                       (60 * 60 * 24 * 1000)
-                    ).toFixed(1)}{' '}
+                    ).toFixed(1)}
                     days ago
                   </li>
                 </ul>

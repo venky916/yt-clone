@@ -15,7 +15,7 @@ const LiveChat = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       //API POLLING
-      console.log('API POLLING');
+      // console.log('API POLLING');
       dispatch(
         addMessage({
           name: generateRandomName(),
@@ -34,7 +34,7 @@ const LiveChat = () => {
         ))}
       </div>
       <form
-        className="w-full p-2 ml-2 border border-black"
+        className="w-[100%] p-2 ml-2 border border-black"
         onSubmit={(e) => {
           e.preventDefault();
           dispatch(

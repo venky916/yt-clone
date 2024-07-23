@@ -11,7 +11,7 @@ const VideoContainer = () => {
   const dispatch = useDispatch();
   const videos = useSelector((store) => store.video.videos);
   const nextPageToken = useSelector(store=>store.video.nextPageToken);
-  console.log(videos);
+  // console.log(videos);
 
   useEffect(() => {
     getVideos();
@@ -64,7 +64,7 @@ const VideoContainer = () => {
     };
   };
 
-   if (!videos.length) return <Shimmer />;
+  if (!videos.length) return <Shimmer />;
   return (
     <div className="flex flex-wrap">
       {videos[0] && <AddVideoCard info={videos[0]} key="add-video-card" />}

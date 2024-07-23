@@ -1,20 +1,21 @@
+import React, { lazy, Suspense } from 'react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Head from './components/Head.jsx';
 import Body from './components/Body.jsx';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import MainContainer from './components/MainContainer.jsx';
 import Error from './components/Error.jsx';
-import {lazy, Suspense } from 'react';
-
 
 const WatchPage = lazy(() => import('./components/WatchPage.jsx'));
-const Profile = lazy(()=>import('./components/Profile.jsx'));
+const Profile = lazy(() => import('./components/Profile.jsx'));
 
 function App() {
+  console.log('App component rendered'); // Debug log
+
   const appRouter = createBrowserRouter([
     {
       path: '/',
       element: <Body />,
-      errorElement: <Error  className='flex justify-center items-center'/>,
+      errorElement: <Error className="flex justify-center items-center" />,
       children: [
         {
           path: '/',
@@ -23,22 +24,31 @@ function App() {
         {
           path: 'watch',
           element: (
-            <Suspense fallback={<h1 className='mt-[50%] bg-red-800'>Loading....</h1>}>
+            <Suspense
+              fallback={
+                <h1>Loading WatchPage....</h1>
+              }
+            >
               <WatchPage />
             </Suspense>
           ),
         },
         {
-          path :'profile',
-          element :(
-            <Suspense fallback={<h1>Loading</h1>}>
-              <Profile/>
+          path: 'profile',
+          element: (
+            <Suspense
+              fallback={
+                <h1>Loading Profile...</h1>
+              }
+            >
+              <Profile />
             </Suspense>
-          )
-        }
+          ),
+        },
       ],
     },
   ]);
+
   return (
     <>
       <Head />

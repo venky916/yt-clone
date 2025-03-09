@@ -4,6 +4,7 @@ import Head from './components/Head.jsx';
 import Body from './components/Body.jsx';
 import MainContainer from './components/MainContainer.jsx';
 import Error from './components/Error.jsx';
+import { FaCircleNotch } from 'react-icons/fa';
 
 const WatchPage = lazy(() => import('./components/WatchPage.jsx'));
 const Profile = lazy(() => import('./components/Profile.jsx'));
@@ -26,7 +27,10 @@ function App() {
           element: (
             <Suspense
               fallback={
-                <h1>Loading WatchPage....</h1>
+                <div className="flex flex-col justify-center items-center h-screen">
+                  <FaCircleNotch className="animate-spin text-4xl text-blue-500 mb-4" />
+                  <p className="text-gray-600">Loading WatchPage...</p>
+                </div>
               }
             >
               <WatchPage />
@@ -38,7 +42,10 @@ function App() {
           element: (
             <Suspense
               fallback={
-                <h1>Loading Profile...</h1>
+                <div className="flex flex-col justify-center items-center h-screen">
+                  <FaCircleNotch className="animate-spin text-4xl text-blue-500 mb-4" />
+                  <p className="text-gray-600">Loading Profile...</p>
+                </div>
               }
             >
               <Profile />

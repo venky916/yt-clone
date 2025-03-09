@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { closeMenu } from '../utils/appSlice';
 import { useSearchParams } from 'react-router-dom';
-import { YOUTUBE_API, YOUTUBE_VIDEO_API } from '../utils/constants';
+import { TUBE_API, TUBE_VIDEO_API } from '../utils/constants';
 import CommentsContainer from './CommentsContainer';
 import LiveChat from './LiveChat';
 import { formatCompactNumber } from '../utils/helper';
@@ -30,12 +30,11 @@ const WatchPage = () => {
 
   const getVideo = async () => {
     const data = await Promise.all([
-      fetch(`${YOUTUBE_VIDEO_API}&id=${videoId}`),
-      fetch(YOUTUBE_API),
+      fetch(`${TUBE_VIDEO_API}&id=${videoId}`),
+      fetch(TUBE_API),
     ]);
     const watchVideoJson = await data[0].json();
     const recVideoJson = await data[1].json();
-    // console.log(watchVideoJson, recVideoJson);
     setVideo(watchVideoJson?.items[0]);
     setRelatedVideos(recVideoJson?.items);
     window.scrollTo(0, 0);
@@ -47,72 +46,100 @@ const WatchPage = () => {
   const { channelTitle, title, thumbnails, publishedAt } = snippet || {};
 
   return (
-    <div className="flex flex-col w-full">
-      <div className="px-5 flex max-w-full">
-        <div>
+    <div className="flex flex-col p-3">
+      {/* Video Player and Live Chat */}
+      <div className="flex flex-col lg:flex-row gap-5">
+        {/* Video Player */}
+        <div className="w-full max-w-4xl">
           <iframe
-            className="w-[1000px] aspect-video"
+            className="w-full aspect-video rounded-xl shadow-lg p-4 sm:p-0"
             src={'https://www.youtube.com/embed/' + videoId}
-            title="YouTube video player"
+            title="Tube video player"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen
           ></iframe>
-          <div className="mt-2 flex justify-between">
-            <div className="flex ">
-              <img
-                src={thumbnails?.default?.url}
-                alt="thumbnail"
-                className="h-10 w-10 rounded-full mr-2"
-              />
-              <div className="flex flex-col ">
-                <h1>{channelTitle}</h1>
-                <p>{formatCompactNumber(statistics?.viewCount)} views</p>
+
+          {/* Video Details */}
+          <div className="mt-4">
+            <h1 className="text-xl font-bold">{title}</h1>
+            <div className="flex flex-col  md:flex-row  justify-between items-start  sm:items-center mt-2">
+              {/* Channel Info */}
+              <div className="flex items-center">
+                <img
+                  src={thumbnails?.default?.url}
+                  alt="thumbnail"
+                  className="h-10 w-10 rounded-full mr-3"
+                />
+                <div>
+                  <p className="font-semibold">{channelTitle}</p>
+                  <p className="text-sm text-gray-600">
+                    {formatCompactNumber(statistics?.viewCount)} views
+                  </p>
+                </div>
               </div>
-            </div>
-            <button className='bg-slate-400 px-4 rounded-lg '>subscribe</button>
-            <div className="flex justify-between">
-              <BiSolidLike className="w-10 h-10 " />
-              <BiSolidDislike className="w-10 h-10" />
-              <RiShareForwardFill className="w-10 h-10" />
-              <IoMdDownload className="w-10 h-10" />
-              <MdMoreHoriz className="w-10 h-10" />
+
+              {/* Subscribe Button */}
+              <button className="bg-red-600 text-white px-4 py-2 rounded-full hover:bg-red-700 transition-colors duration-200 mt-2 sm:mt-0">
+                Subscribe
+              </button>
+
+              {/* Action Buttons */}
+              <div className="flex items-center gap-4 mt-2 sm:mt-0">
+                <div className="flex items-center gap-2">
+                  <BiSolidLike className="w-6 h-6 text-gray-600 hover:text-blue-600 cursor-pointer" />
+                  <span className="text-sm text-gray-600">
+                    {formatCompactNumber(statistics?.likeCount)}
+                  </span>
+                </div>
+                <BiSolidDislike className="w-6 h-6 text-gray-600 hover:text-blue-600 cursor-pointer" />
+                <RiShareForwardFill className="w-6 h-6 text-gray-600 hover:text-blue-600 cursor-pointer" />
+                <IoMdDownload className="w-6 h-6 text-gray-600 hover:text-blue-600 cursor-pointer" />
+                <MdMoreHoriz className="w-6 h-6 text-gray-600 hover:text-blue-600 cursor-pointer" />
+              </div>
             </div>
           </div>
         </div>
-        <div className="w-[80%]">
+
+        {/* Live Chat */}
+        <div className="w-full lg:w-[400px]">
           <LiveChat />
         </div>
       </div>
-      <div className="flex">
-        <CommentsContainer />
-        <div className="flex flex-col">
-          {relatedVideos.map((video) => (
+
+      {/* Comments and Related Videos */}
+      <div className="flex flex-col lg:flex-row gap-10 mt-5">
+        {/* Comments Section */}
+        <div className="max-w-4xl">
+          <CommentsContainer />
+        </div>
+
+        {/* Related Videos */}
+        <div className="w-full lg:w-[400px]">
+          <h2 className="text-xl font-bold mb-4">Related Videos</h2>
+          {relatedVideos.slice(0,10).map((video) => (
             <Link key={video.id} to={'/watch?v=' + video?.id}>
-              <div className="px-3 m-2 mt-[20px] flex">
+              <div className="flex gap-3 mb-4">
                 <img
-                  className="rounded-xl w-[168px] h-[94px] "
+                  className="rounded-lg w-40 h-24 object-cover"
                   alt="thumbnail"
                   src={video?.snippet?.thumbnails?.medium?.url}
                 />
-                <ul className="flex flex-col justify-start ml-2 w-60">
-                  <li className="font-medium py-2 text-[14px] line-clamp-2 max-h-[50px] leading-5">
+                <div className="flex-1">
+                  <h3 className="font-semibold text-sm line-clamp-2">
                     {video?.snippet?.title}
-                  </li>
-                  <li className="text-gray-500 text-[12px]">
+                  </h3>
+                  <p className="text-sm text-gray-600">
                     {video?.snippet?.channelTitle}
-                  </li>
-                  <li className="text-gray-500 text-[12px]">
-                    {formatCompactNumber(video?.statistics?.viewCount) +
-                      'views '}
-                    {(
-                      Math.abs(
-                        new Date(video?.snippet?.publishedAt) - new Date(),
-                      ) /
-                      (60 * 60 * 24 * 1000)
-                    ).toFixed(1)}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    {formatCompactNumber(video?.statistics?.viewCount)} views •{' '}
+                    {Math.floor(
+                      (new Date() - new Date(video?.snippet?.publishedAt)) /
+                        (1000 * 60 * 60 * 24),
+                    )}{' '}
                     days ago
-                  </li>
-                </ul>
+                  </p>
+                </div>
               </div>
             </Link>
           ))}

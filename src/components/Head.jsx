@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleMenu } from '../utils/appSlice.js';
-import { YOUTUBE_SEARCH_API } from '../utils/constants.js';
+import { TUBE_SEARCH_API } from '../utils/constants.js';
 import { cacheResults } from '../utils/searchSlice.js';
 import { RxCrossCircled } from 'react-icons/rx';
 import getSearchVideos from '../utils/getSearchVideos.js';
+import { FaUserCircle } from 'react-icons/fa';
 
 const Head = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -35,7 +36,7 @@ const Head = () => {
 
   const getSearchSuggestions = async () => {
     try {
-      const response = await fetch(YOUTUBE_SEARCH_API + searchQuery);
+      const response = await fetch(TUBE_SEARCH_API + searchQuery);
       const json = await response.json();
       setsuggestions(json[1]);
       dispatch(
@@ -77,7 +78,7 @@ const Head = () => {
   };
 
   return (
-    <div className="grid grid-flow-col p-5 m-2 shadow-lg w-screen">
+    <div className="grid grid-flow-col p-5 m-2 shadow-lg w-screen sticky top-0 z-20 bg-white/20 backdrop-blur-md">
       <div className="flex col-span-1">
         <img
           onClick={toggleMenuHandler}
@@ -87,15 +88,15 @@ const Head = () => {
         />
         <img
           className="h-10 mx-2"
-          alt="youtube logo"
-          src="https://logodownload.org/wp-content/uploads/2014/10/youtube-logo-9.png"
+          alt="tube logo"
+          src="https://cdn.pixabay.com/photo/2021/09/11/18/21/youtube-6616310_640.png"
           onClick={() => (window.location.href = '/')}
         />
       </div>
       <div className="col-span-10 px-19">
         <div className="flex items-center relative">
           <input
-            className="w-2/4 py-2 border border-gray-400 rounded-l-full pl-10"
+            className="w-2/4 py-2 border border-gray-400 rounded-l-full pl-5"
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -135,10 +136,8 @@ const Head = () => {
         )}
       </div>
       <div className="col-span-1">
-        <img
-          className="h-10"
-          alt="userIcon"
-          src="https://static.vecteezy.com/system/resources/previews/000/576/206/original/vector-sign-of-people-icon.jpg"
+        <FaUserCircle
+          className="cursor-pointer w-10 h-10"
           onClick={() => (window.location.href = '/profile')}
         />
       </div>

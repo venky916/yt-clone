@@ -4,7 +4,7 @@ import ButtonList from './ButtonList'
 
 const MainContainer = () => {
   return (
-    <div className='w-[100%]'>
+    <div className='w-screen ml-3 overflow-hidden'>
         <ButtonList />
         <VideoContainer />
     </div>

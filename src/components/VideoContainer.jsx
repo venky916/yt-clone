@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { YOUTUBE_API } from '../utils/constants';
+import { TUBE_API } from '../utils/constants';
 import VideoCard, { AddVideoCard } from './VideoCard';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -29,8 +29,8 @@ const VideoContainer = () => {
     try {
       const url =
         nextPageToken !== ''
-          ? `${YOUTUBE_API}&pageToken=${nextPageToken}`
-          : YOUTUBE_API;
+          ? `${TUBE_API}&pageToken=${nextPageToken}`
+          : TUBE_API;
       const response = await fetch(url);
       const json = await response.json();
       // console.log(json)
@@ -66,7 +66,7 @@ const VideoContainer = () => {
 
   if (!videos.length) return <Shimmer />;
   return (
-    <div className="flex flex-wrap">
+    <div className="flex flex-wrap items-center w-full max-w-7xl mx-auto">
       {videos[0] && <AddVideoCard info={videos[0]} key="add-video-card" />}
       {videos.map((video, index) => (
         <Link

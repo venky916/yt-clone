@@ -1,53 +1,71 @@
 import React from 'react';
 import { formatCompactNumber } from '../utils/helper';
+import { FaPlay } from 'react-icons/fa';
 
 const VideoCard = ({ info }) => {
   if (!info) return null;
-  // console.log(info);
+
   const { snippet, statistics } = info;
   const { channelTitle, title, thumbnails, publishedAt } = snippet;
+
+  // Calculate days since published
+  const daysAgo = Math.floor(
+    (new Date() - new Date(publishedAt)) / (1000 * 60 * 60 * 24),
+  );
+
   return (
-    <div className="p-2 m-2 w-60 shadow-lg ">
+    <div className="p-2 m-2 w-96 sm:w-80 md:w-72 lg:w-96 hover:shadow-xl transition-shadow duration-200 rounded-lg">
+      {/* Thumbnail */}
       <img
-        className="rounded-lg hover:drop-shadow-xl "
+        className="rounded-lg w-full h-40 object-cover"
         alt="thumbnail"
         src={thumbnails.medium.url}
         loading="lazy"
       />
-      <ul className="flex justify-start items-start">
+
+      {/* Video Details */}
+      <div className="flex mt-3">
+        {/* Channel Thumbnail */}
         <img
-          className="rounded-full w-7 h-7 mt-2"
-          alt="thumbnail"
+          className="rounded-full w-10 h-10 mr-3"
+          alt="channel"
           src={thumbnails.default.url}
-          loading='lazy'
+          loading="lazy"
         />
-        <div>
-          <li className="font-bold py-2 line-clamp-1 max-h-[30px] ">{title}</li>
-          <li className="text-gray-500 text-[13px] line-clamp-1 max-h-4">
-            {channelTitle}
-          </li>
-          <li className="text-gray-500 text-[13px]">
+
+        {/* Video Info */}
+        <div className="flex-1">
+          <h3 className="font-semibold text-sm line-clamp-1">{title}</h3>
+          <p className="text-gray-600 text-xs mt-1">{channelTitle}</p>
+          <p className="text-gray-600 text-xs mt-1">
             {statistics?.viewCount
-              ? `${formatCompactNumber(statistics.viewCount)} views `
+              ? `${formatCompactNumber(statistics.viewCount)} views • `
               : ''}
-            {Math.abs(
-              (new Date(publishedAt) - new Date()) / (60 * 60 * 24 * 1000),
-            ).toFixed(0)}{' '}
-            days ago
-          </li>
+            {daysAgo === 0 ? 'Today' : `${daysAgo} days ago`}
+          </p>
         </div>
-      </ul>
+      </div>
     </div>
   );
 };
 
-//HigherOrdercomponent
-export const AddVideoCard = ({info})=>{
-  return(
-    <div className='p-1 m-1 border border-red-900'>
-      <VideoCard info={info} />
+// Higher-Order Component for Ad Video Card
+export const AddVideoCard = ({ info }) => {
+  return (
+    <div className="p-1 m-1 border border-gray-900 rounded-lg relative overflow-hidden">
+      {/* Black Overlay */}
+      <div className="absolute inset-0 bg-black bg-opacity-50 z-10 flex justify-center items-center">
+        <div className="mb-10 text-white text-4xl hover:text-red-500 transition-colors duration-200 animate-pulse">
+          <FaPlay />
+        </div>
+      </div>
+
+      {/* Video Card in the Background */}
+      <div className="relative z-0">
+        <VideoCard info={info} />
+      </div>
     </div>
-  )
-}
+  );
+};
 
 export default VideoCard;

@@ -2,8 +2,8 @@
 
 const ShimmerCard = ()=>{
     return (
-      <div className="p-2 m-2 w-60">
-        <div className="animate-pulse rounded-lg bg-gray-300 w-1uto h-40"></div>
+      <div className="p-2 m-2 w-96">
+        <div className="animate-pulse rounded-lg bg-gray-300 w-auto h-40"></div>
         <div className="animate-pulse flex justify-start items-start mt-2">
           <div className="animate-pulse rounded-full bg-gray-300 w-10 h-9 mt-2 mr-2"></div>
           <div className=" flex flex-col items-start w-full">

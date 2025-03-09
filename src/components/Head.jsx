@@ -87,7 +87,7 @@ const Head = () => {
           src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Hamburger_icon.svg/1024px-Hamburger_icon.svg.png"
         />
         <img
-          className="h-10 mx-2"
+          className="h-10 mx-2 cursor-pointer"
           alt="tube logo"
           src="https://cdn.pixabay.com/photo/2021/09/11/18/21/youtube-6616310_640.png"
           onClick={() => (window.location.href = '/')}

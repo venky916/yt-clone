@@ -4,7 +4,7 @@ export const TUBE_API = 'https://youtube.googleapis.com/youtube/v3/videos?part=s
 
 export const TUBE_VIDEO_API = 'https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&key=' + GOOGLE_API_KEY;
 
-export const TUBE_SEARCH_API = 'https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=';
+export const TUBE_SEARCH_API = 'http://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=';
 
 export const OFFSET_LIVE_CHAT = 25;
 
